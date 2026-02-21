@@ -1,6 +1,6 @@
 import type { IExecuteFunctions, INodeProperties, INodePropertyOptions } from 'n8n-workflow';
 import { NodeOperationError } from 'n8n-workflow';
-import type { IOperationResult } from '../../../../shared/operation-result';
+import type { IOperationResult } from '../../../shared/operation-result';
 import { encodeObjectName, getGcsAccessToken, readErrorStatusCode } from './common';
 
 export const googleCloudStorageObjectExistsOption: INodePropertyOptions = {
@@ -16,7 +16,7 @@ const existsBucketProperty: INodeProperties = {
 	type: 'string',
 	default: '',
 	required: true,
-	displayOptions: { show: { gcpModule: ['googleCloudStorage'], googleCloudStorageEntity: ['object'], googleCloudStorageObjectOperation: ['exists'] } },
+	displayOptions: { show: { resource: ['googleCloudStorageObject'], operation: ['exists'] } },
 };
 
 const existsFilePathProperty: INodeProperties = {
@@ -25,7 +25,7 @@ const existsFilePathProperty: INodeProperties = {
 	type: 'string',
 	default: '',
 	required: true,
-	displayOptions: { show: { gcpModule: ['googleCloudStorage'], googleCloudStorageEntity: ['object'], googleCloudStorageObjectOperation: ['exists'] } },
+	displayOptions: { show: { resource: ['googleCloudStorageObject'], operation: ['exists'] } },
 };
 
 export const googleCloudStorageObjectExistsProperties: INodeProperties[] = [existsBucketProperty, existsFilePathProperty];

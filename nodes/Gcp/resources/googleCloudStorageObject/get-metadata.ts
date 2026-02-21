@@ -1,6 +1,6 @@
 import type { IDataObject, IExecuteFunctions, INodeProperties, INodePropertyOptions } from 'n8n-workflow';
 import { NodeOperationError } from 'n8n-workflow';
-import type { IOperationResult } from '../../../../shared/operation-result';
+import type { IOperationResult } from '../../../shared/operation-result';
 import { encodeObjectName, getGcsAccessToken } from './common';
 
 export const googleCloudStorageObjectGetMetadataOption: INodePropertyOptions = {
@@ -16,7 +16,7 @@ const metadataBucketProperty: INodeProperties = {
 	type: 'string',
 	default: '',
 	required: true,
-	displayOptions: { show: { gcpModule: ['googleCloudStorage'], googleCloudStorageEntity: ['object'], googleCloudStorageObjectOperation: ['getMetadata'] } },
+	displayOptions: { show: { resource: ['googleCloudStorageObject'], operation: ['getMetadata'] } },
 };
 
 const metadataFilePathProperty: INodeProperties = {
@@ -25,7 +25,7 @@ const metadataFilePathProperty: INodeProperties = {
 	type: 'string',
 	default: '',
 	required: true,
-	displayOptions: { show: { gcpModule: ['googleCloudStorage'], googleCloudStorageEntity: ['object'], googleCloudStorageObjectOperation: ['getMetadata'] } },
+	displayOptions: { show: { resource: ['googleCloudStorageObject'], operation: ['getMetadata'] } },
 };
 
 export const googleCloudStorageObjectGetMetadataProperties: INodeProperties[] = [metadataBucketProperty, metadataFilePathProperty];

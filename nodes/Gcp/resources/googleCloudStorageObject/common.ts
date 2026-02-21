@@ -1,6 +1,6 @@
 import type { IDataObject, IExecuteFunctions } from 'n8n-workflow';
 import { NodeOperationError } from 'n8n-workflow';
-import { getGoogleServiceAccountAccessToken } from '../../../../shared/get-access-token';
+import { getGoogleServiceAccountAccessToken } from '../../../shared/get-access-token';
 
 const GCS_RW_SCOPE = 'https://www.googleapis.com/auth/devstorage.read_write';
 

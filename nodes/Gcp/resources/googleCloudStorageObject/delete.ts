@@ -1,6 +1,6 @@
 import type { IExecuteFunctions, INodeProperties, INodePropertyOptions } from 'n8n-workflow';
 import { NodeOperationError } from 'n8n-workflow';
-import type { IOperationResult } from '../../../../shared/operation-result';
+import type { IOperationResult } from '../../../shared/operation-result';
 import { encodeObjectName, getGcsAccessToken } from './common';
 
 export const googleCloudStorageObjectDeleteOption: INodePropertyOptions = {
@@ -16,7 +16,7 @@ const deleteBucketProperty: INodeProperties = {
 	type: 'string',
 	default: '',
 	required: true,
-	displayOptions: { show: { gcpModule: ['googleCloudStorage'], googleCloudStorageEntity: ['object'], googleCloudStorageObjectOperation: ['delete'] } },
+	displayOptions: { show: { resource: ['googleCloudStorageObject'], operation: ['delete'] } },
 };
 
 const deleteFilePathProperty: INodeProperties = {
@@ -25,7 +25,7 @@ const deleteFilePathProperty: INodeProperties = {
 	type: 'string',
 	default: '',
 	required: true,
-	displayOptions: { show: { gcpModule: ['googleCloudStorage'], googleCloudStorageEntity: ['object'], googleCloudStorageObjectOperation: ['delete'] } },
+	displayOptions: { show: { resource: ['googleCloudStorageObject'], operation: ['delete'] } },
 };
 
 export const googleCloudStorageObjectDeleteProperties: INodeProperties[] = [deleteBucketProperty, deleteFilePathProperty];

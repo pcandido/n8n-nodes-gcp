@@ -1,6 +1,6 @@
 import type { IExecuteFunctions, INodeProperties, INodePropertyOptions } from 'n8n-workflow';
-import type { IOperationResult } from '../../../../shared/operation-result';
-import { createV2SignedUrl } from '../../../../shared/signed-url';
+import type { IOperationResult } from '../../../shared/operation-result';
+import { createV2SignedUrl } from '../../../shared/signed-url';
 
 export const googleCloudStorageObjectSignUploadUrlOption: INodePropertyOptions = {
 	name: 'Sign Upload URL',
@@ -15,7 +15,7 @@ const signUploadBucketProperty: INodeProperties = {
 	type: 'string',
 	default: '',
 	required: true,
-	displayOptions: { show: { gcpModule: ['googleCloudStorage'], googleCloudStorageEntity: ['object'], googleCloudStorageObjectOperation: ['signUploadUrl'] } },
+	displayOptions: { show: { resource: ['googleCloudStorageObject'], operation: ['signUploadUrl'] } },
 };
 
 const signUploadFilePathProperty: INodeProperties = {
@@ -24,7 +24,7 @@ const signUploadFilePathProperty: INodeProperties = {
 	type: 'string',
 	default: '',
 	required: true,
-	displayOptions: { show: { gcpModule: ['googleCloudStorage'], googleCloudStorageEntity: ['object'], googleCloudStorageObjectOperation: ['signUploadUrl'] } },
+	displayOptions: { show: { resource: ['googleCloudStorageObject'], operation: ['signUploadUrl'] } },
 };
 
 const signUploadExpirationProperty: INodeProperties = {
@@ -34,7 +34,7 @@ const signUploadExpirationProperty: INodeProperties = {
 	default: 3600,
 	typeOptions: { minValue: 1 },
 	required: true,
-	displayOptions: { show: { gcpModule: ['googleCloudStorage'], googleCloudStorageEntity: ['object'], googleCloudStorageObjectOperation: ['signUploadUrl'] } },
+	displayOptions: { show: { resource: ['googleCloudStorageObject'], operation: ['signUploadUrl'] } },
 };
 
 const signUploadContentTypeProperty: INodeProperties = {
@@ -42,7 +42,7 @@ const signUploadContentTypeProperty: INodeProperties = {
 	name: 'googleCloudStorage_object_signUploadUrl_contentType',
 	type: 'string',
 	default: '',
-	displayOptions: { show: { gcpModule: ['googleCloudStorage'], googleCloudStorageEntity: ['object'], googleCloudStorageObjectOperation: ['signUploadUrl'] } },
+	displayOptions: { show: { resource: ['googleCloudStorageObject'], operation: ['signUploadUrl'] } },
 	description: 'Optional content type restriction for the signed upload URL',
 };
 

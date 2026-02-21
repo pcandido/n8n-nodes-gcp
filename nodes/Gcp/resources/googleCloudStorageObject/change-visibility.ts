@@ -1,6 +1,6 @@
 import type { IExecuteFunctions, INodeProperties, INodePropertyOptions } from 'n8n-workflow';
 import { NodeOperationError } from 'n8n-workflow';
-import type { IOperationResult } from '../../../../shared/operation-result';
+import type { IOperationResult } from '../../../shared/operation-result';
 import { encodeObjectName, getGcsAccessToken, readErrorStatusCode } from './common';
 
 export const googleCloudStorageObjectChangeVisibilityOption: INodePropertyOptions = {
@@ -16,7 +16,7 @@ const visibilityBucketProperty: INodeProperties = {
 	type: 'string',
 	default: '',
 	required: true,
-	displayOptions: { show: { gcpModule: ['googleCloudStorage'], googleCloudStorageEntity: ['object'], googleCloudStorageObjectOperation: ['changeVisibility'] } },
+	displayOptions: { show: { resource: ['googleCloudStorageObject'], operation: ['changeVisibility'] } },
 };
 
 const visibilityFilePathProperty: INodeProperties = {
@@ -25,7 +25,7 @@ const visibilityFilePathProperty: INodeProperties = {
 	type: 'string',
 	default: '',
 	required: true,
-	displayOptions: { show: { gcpModule: ['googleCloudStorage'], googleCloudStorageEntity: ['object'], googleCloudStorageObjectOperation: ['changeVisibility'] } },
+	displayOptions: { show: { resource: ['googleCloudStorageObject'], operation: ['changeVisibility'] } },
 };
 
 const visibilityValueProperty: INodeProperties = {
@@ -33,7 +33,7 @@ const visibilityValueProperty: INodeProperties = {
 	name: 'googleCloudStorage_object_changeVisibility_value',
 	type: 'options',
 	default: 'private',
-	displayOptions: { show: { gcpModule: ['googleCloudStorage'], googleCloudStorageEntity: ['object'], googleCloudStorageObjectOperation: ['changeVisibility'] } },
+	displayOptions: { show: { resource: ['googleCloudStorageObject'], operation: ['changeVisibility'] } },
 	options: [
 		{ name: 'Private', value: 'private' },
 		{ name: 'Public', value: 'public' },

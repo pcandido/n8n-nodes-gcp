@@ -1,6 +1,6 @@
 import type { IExecuteFunctions, INodeExecutionData, INodeProperties, INodePropertyOptions } from 'n8n-workflow';
 import { NodeOperationError } from 'n8n-workflow';
-import type { IOperationResult } from '../../../../shared/operation-result';
+import type { IOperationResult } from '../../../shared/operation-result';
 import {
 	executeGoogleCloudStorageObjectChangeVisibility,
 	googleCloudStorageObjectChangeVisibilityOption,
@@ -62,6 +62,11 @@ import {
 	googleCloudStorageObjectUploadProperties,
 } from './upload';
 
+export const googleCloudStorageObjectOption: INodePropertyOptions = {
+	name: 'Google Cloud Storage - Object',
+	value: 'googleCloudStorageObject',
+};
+
 export const googleCloudStorageObjectEntityOption: INodePropertyOptions = {
 	name: 'Object',
 	value: 'object',
@@ -69,14 +74,13 @@ export const googleCloudStorageObjectEntityOption: INodePropertyOptions = {
 
 const googleCloudStorageObjectOperationProperty: INodeProperties = {
 	displayName: 'Operation',
-	name: 'googleCloudStorageObjectOperation',
+	name: 'operation',
 	type: 'options',
 	noDataExpression: true,
 	default: 'upload',
 	displayOptions: {
 		show: {
-			gcpModule: ['googleCloudStorage'],
-			googleCloudStorageEntity: ['object'],
+			resource: ['googleCloudStorageObject'],
 		},
 	},
 	options: [
@@ -146,7 +150,7 @@ export async function executeGoogleCloudStorageObject(
 		default:
 			throw new NodeOperationError(
 				context.getNode(),
-				`Unsupported Google Cloud Storage Object operation: ${operation}`,
+				`Unsupported Google Cloud Storage operation: ${operation}`,
 				{ itemIndex },
 			);
 	}

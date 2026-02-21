@@ -1,6 +1,6 @@
 import type { IDataObject, IExecuteFunctions, INodeProperties, INodePropertyOptions } from 'n8n-workflow';
 import { NodeOperationError } from 'n8n-workflow';
-import type { IOperationResult } from '../../../../shared/operation-result';
+import type { IOperationResult } from '../../../shared/operation-result';
 import { encodeObjectName, ensureObjectMetadata, getGcsAccessToken } from './common';
 
 export const googleCloudStorageObjectSetMetadataOption: INodePropertyOptions = {
@@ -16,7 +16,7 @@ const setMetadataBucketProperty: INodeProperties = {
 	type: 'string',
 	default: '',
 	required: true,
-	displayOptions: { show: { gcpModule: ['googleCloudStorage'], googleCloudStorageEntity: ['object'], googleCloudStorageObjectOperation: ['setMetadata'] } },
+	displayOptions: { show: { resource: ['googleCloudStorageObject'], operation: ['setMetadata'] } },
 };
 
 const setMetadataFilePathProperty: INodeProperties = {
@@ -25,7 +25,7 @@ const setMetadataFilePathProperty: INodeProperties = {
 	type: 'string',
 	default: '',
 	required: true,
-	displayOptions: { show: { gcpModule: ['googleCloudStorage'], googleCloudStorageEntity: ['object'], googleCloudStorageObjectOperation: ['setMetadata'] } },
+	displayOptions: { show: { resource: ['googleCloudStorageObject'], operation: ['setMetadata'] } },
 };
 
 const setMetadataJsonProperty: INodeProperties = {
@@ -34,7 +34,7 @@ const setMetadataJsonProperty: INodeProperties = {
 	type: 'json',
 	default: '{}',
 	required: true,
-	displayOptions: { show: { gcpModule: ['googleCloudStorage'], googleCloudStorageEntity: ['object'], googleCloudStorageObjectOperation: ['setMetadata'] } },
+	displayOptions: { show: { resource: ['googleCloudStorageObject'], operation: ['setMetadata'] } },
 	description: 'JSON object used to patch metadata',
 };
 

@@ -1,6 +1,6 @@
 import type { IExecuteFunctions, INodeProperties, INodePropertyOptions } from 'n8n-workflow';
-import type { IOperationResult } from '../../../../shared/operation-result';
-import { createV2SignedUrl } from '../../../../shared/signed-url';
+import type { IOperationResult } from '../../../shared/operation-result';
+import { createV2SignedUrl } from '../../../shared/signed-url';
 
 export const googleCloudStorageObjectSignDownloadUrlOption: INodePropertyOptions = {
 	name: 'Sign Download URL',
@@ -15,7 +15,7 @@ const signDownloadBucketProperty: INodeProperties = {
 	type: 'string',
 	default: '',
 	required: true,
-	displayOptions: { show: { gcpModule: ['googleCloudStorage'], googleCloudStorageEntity: ['object'], googleCloudStorageObjectOperation: ['signDownloadUrl'] } },
+	displayOptions: { show: { resource: ['googleCloudStorageObject'], operation: ['signDownloadUrl'] } },
 };
 
 const signDownloadFilePathProperty: INodeProperties = {
@@ -24,7 +24,7 @@ const signDownloadFilePathProperty: INodeProperties = {
 	type: 'string',
 	default: '',
 	required: true,
-	displayOptions: { show: { gcpModule: ['googleCloudStorage'], googleCloudStorageEntity: ['object'], googleCloudStorageObjectOperation: ['signDownloadUrl'] } },
+	displayOptions: { show: { resource: ['googleCloudStorageObject'], operation: ['signDownloadUrl'] } },
 };
 
 const signDownloadExpirationProperty: INodeProperties = {
@@ -34,7 +34,7 @@ const signDownloadExpirationProperty: INodeProperties = {
 	default: 3600,
 	typeOptions: { minValue: 1 },
 	required: true,
-	displayOptions: { show: { gcpModule: ['googleCloudStorage'], googleCloudStorageEntity: ['object'], googleCloudStorageObjectOperation: ['signDownloadUrl'] } },
+	displayOptions: { show: { resource: ['googleCloudStorageObject'], operation: ['signDownloadUrl'] } },
 };
 
 export const googleCloudStorageObjectSignDownloadUrlProperties: INodeProperties[] = [

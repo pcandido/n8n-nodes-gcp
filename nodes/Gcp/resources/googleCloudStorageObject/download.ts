@@ -1,6 +1,6 @@
 import type { IBinaryData, IExecuteFunctions, INodeProperties, INodePropertyOptions } from 'n8n-workflow';
 import { NodeOperationError } from 'n8n-workflow';
-import type { IOperationResult } from '../../../../shared/operation-result';
+import type { IOperationResult } from '../../../shared/operation-result';
 import { encodeObjectName, getGcsAccessToken } from './common';
 
 export const googleCloudStorageObjectDownloadOption: INodePropertyOptions = {
@@ -16,7 +16,7 @@ const downloadBucketProperty: INodeProperties = {
 	type: 'string',
 	default: '',
 	required: true,
-	displayOptions: { show: { gcpModule: ['googleCloudStorage'], googleCloudStorageEntity: ['object'], googleCloudStorageObjectOperation: ['download'] } },
+	displayOptions: { show: { resource: ['googleCloudStorageObject'], operation: ['download'] } },
 };
 
 const downloadFilePathProperty: INodeProperties = {
@@ -25,7 +25,7 @@ const downloadFilePathProperty: INodeProperties = {
 	type: 'string',
 	default: '',
 	required: true,
-	displayOptions: { show: { gcpModule: ['googleCloudStorage'], googleCloudStorageEntity: ['object'], googleCloudStorageObjectOperation: ['download'] } },
+	displayOptions: { show: { resource: ['googleCloudStorageObject'], operation: ['download'] } },
 };
 
 const downloadBinaryProperty: INodeProperties = {
@@ -34,7 +34,7 @@ const downloadBinaryProperty: INodeProperties = {
 	type: 'string',
 	default: 'data',
 	required: true,
-	displayOptions: { show: { gcpModule: ['googleCloudStorage'], googleCloudStorageEntity: ['object'], googleCloudStorageObjectOperation: ['download'] } },
+	displayOptions: { show: { resource: ['googleCloudStorageObject'], operation: ['download'] } },
 };
 
 export const googleCloudStorageObjectDownloadProperties: INodeProperties[] = [

@@ -1,6 +1,6 @@
 import type { IDataObject, IExecuteFunctions, INodeProperties, INodePropertyOptions } from 'n8n-workflow';
 import { NodeOperationError } from 'n8n-workflow';
-import type { IOperationResult } from '../../../../shared/operation-result';
+import type { IOperationResult } from '../../../shared/operation-result';
 import { getGcsAccessToken } from './common';
 
 export const googleCloudStorageObjectListOption: INodePropertyOptions = {
@@ -16,7 +16,7 @@ const listBucketProperty: INodeProperties = {
 	type: 'string',
 	default: '',
 	required: true,
-	displayOptions: { show: { gcpModule: ['googleCloudStorage'], googleCloudStorageEntity: ['object'], googleCloudStorageObjectOperation: ['list'] } },
+	displayOptions: { show: { resource: ['googleCloudStorageObject'], operation: ['list'] } },
 };
 
 const listPrefixProperty: INodeProperties = {
@@ -24,7 +24,7 @@ const listPrefixProperty: INodeProperties = {
 	name: 'googleCloudStorage_object_list_prefix',
 	type: 'string',
 	default: '',
-	displayOptions: { show: { gcpModule: ['googleCloudStorage'], googleCloudStorageEntity: ['object'], googleCloudStorageObjectOperation: ['list'] } },
+	displayOptions: { show: { resource: ['googleCloudStorageObject'], operation: ['list'] } },
 };
 
 const listMaxResultsProperty: INodeProperties = {
@@ -33,7 +33,7 @@ const listMaxResultsProperty: INodeProperties = {
 	type: 'number',
 	default: 100,
 	typeOptions: { minValue: 1, maxValue: 1000 },
-	displayOptions: { show: { gcpModule: ['googleCloudStorage'], googleCloudStorageEntity: ['object'], googleCloudStorageObjectOperation: ['list'] } },
+	displayOptions: { show: { resource: ['googleCloudStorageObject'], operation: ['list'] } },
 };
 
 export const googleCloudStorageObjectListProperties: INodeProperties[] = [

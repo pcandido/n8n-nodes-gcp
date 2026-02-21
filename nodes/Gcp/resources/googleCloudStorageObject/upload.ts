@@ -6,8 +6,8 @@ import type {
 	INodePropertyOptions,
 } from 'n8n-workflow';
 import { NodeOperationError } from 'n8n-workflow';
-import type { IOperationResult } from '../../../../shared/operation-result';
-import { getGoogleServiceAccountAccessToken } from '../../../../shared/get-access-token';
+import type { IOperationResult } from '../../../shared/operation-result';
+import { getGoogleServiceAccountAccessToken } from '../../../shared/get-access-token';
 
 export const googleCloudStorageObjectUploadOption: INodePropertyOptions = {
 	name: 'Upload',
@@ -24,9 +24,8 @@ const uploadBucketProperty: INodeProperties = {
 	required: true,
 	displayOptions: {
 		show: {
-			gcpModule: ['googleCloudStorage'],
-			googleCloudStorageEntity: ['object'],
-			googleCloudStorageObjectOperation: ['upload'],
+			resource: ['googleCloudStorageObject'],
+			operation: ['upload'],
 		},
 	},
 	description: 'Name of the GCS bucket',
@@ -40,9 +39,8 @@ const uploadFilePathProperty: INodeProperties = {
 	required: true,
 	displayOptions: {
 		show: {
-			gcpModule: ['googleCloudStorage'],
-			googleCloudStorageEntity: ['object'],
-			googleCloudStorageObjectOperation: ['upload'],
+			resource: ['googleCloudStorageObject'],
+			operation: ['upload'],
 		},
 	},
 	description: 'Path of the object inside the bucket',
@@ -56,9 +54,8 @@ const uploadBinaryProperty: INodeProperties = {
 	required: true,
 	displayOptions: {
 		show: {
-			gcpModule: ['googleCloudStorage'],
-			googleCloudStorageEntity: ['object'],
-			googleCloudStorageObjectOperation: ['upload'],
+			resource: ['googleCloudStorageObject'],
+			operation: ['upload'],
 		},
 	},
 	description: 'Binary property that contains the file content',

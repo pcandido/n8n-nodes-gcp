@@ -1,6 +1,6 @@
 import type { IDataObject, IExecuteFunctions, INodeProperties, INodePropertyOptions } from 'n8n-workflow';
 import { NodeOperationError } from 'n8n-workflow';
-import type { IOperationResult } from '../../../../shared/operation-result';
+import type { IOperationResult } from '../../../shared/operation-result';
 import { encodeObjectName, getGcsAccessToken } from './common';
 
 export const googleCloudStorageObjectMoveOption: INodePropertyOptions = {
@@ -16,7 +16,7 @@ const moveSourceBucketProperty: INodeProperties = {
 	type: 'string',
 	default: '',
 	required: true,
-	displayOptions: { show: { gcpModule: ['googleCloudStorage'], googleCloudStorageEntity: ['object'], googleCloudStorageObjectOperation: ['move'] } },
+	displayOptions: { show: { resource: ['googleCloudStorageObject'], operation: ['move'] } },
 };
 
 const moveSourceFilePathProperty: INodeProperties = {
@@ -25,7 +25,7 @@ const moveSourceFilePathProperty: INodeProperties = {
 	type: 'string',
 	default: '',
 	required: true,
-	displayOptions: { show: { gcpModule: ['googleCloudStorage'], googleCloudStorageEntity: ['object'], googleCloudStorageObjectOperation: ['move'] } },
+	displayOptions: { show: { resource: ['googleCloudStorageObject'], operation: ['move'] } },
 };
 
 const moveDestinationBucketProperty: INodeProperties = {
@@ -34,7 +34,7 @@ const moveDestinationBucketProperty: INodeProperties = {
 	type: 'string',
 	default: '',
 	required: true,
-	displayOptions: { show: { gcpModule: ['googleCloudStorage'], googleCloudStorageEntity: ['object'], googleCloudStorageObjectOperation: ['move'] } },
+	displayOptions: { show: { resource: ['googleCloudStorageObject'], operation: ['move'] } },
 };
 
 const moveDestinationFilePathProperty: INodeProperties = {
@@ -43,7 +43,7 @@ const moveDestinationFilePathProperty: INodeProperties = {
 	type: 'string',
 	default: '',
 	required: true,
-	displayOptions: { show: { gcpModule: ['googleCloudStorage'], googleCloudStorageEntity: ['object'], googleCloudStorageObjectOperation: ['move'] } },
+	displayOptions: { show: { resource: ['googleCloudStorageObject'], operation: ['move'] } },
 };
 
 export const googleCloudStorageObjectMoveProperties: INodeProperties[] = [
