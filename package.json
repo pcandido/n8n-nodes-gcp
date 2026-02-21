@@ -1,7 +1,7 @@
 {
-    "name": "n8n-nodes-gcp-storage",
+    "name": "n8n-nodes-gcp",
     "version": "0.1.0",
-    "description": "n8n community node with GCS object operations wrapper",
+    "description": "n8n community node with modular Google Cloud Platform operations",
     "license": "MIT",
     "homepage": "",
     "keywords": [
@@ -13,7 +13,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git@github.com:pcandido/n8n-nodes-gcp-storage.git"
+        "url": "git@github.com:pcandido/n8n-nodes-gcp.git"
     },
     "scripts": {
         "build": "n8n-node build",
@@ -30,9 +30,11 @@
     "n8n": {
         "n8nNodesApiVersion": 1,
         "strict": true,
-        "credentials": [],
+        "credentials": [
+            "dist/credentials/GcpServiceAccountApi.credentials.js"
+        ],
         "nodes": [
-            "dist/nodes/GcsStorage/GcsStorage.node.js"
+            "dist/nodes/Gcp/Gcp.node.js"
         ]
     },
     "devDependencies": {

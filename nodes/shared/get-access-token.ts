@@ -54,7 +54,7 @@ export async function getGoogleServiceAccountAccessToken(
 	itemIndex: number,
 	scope: string,
 ): Promise<string> {
-	const credentials = (await context.getCredentials('googleApi')) as Record<string, unknown>;
+	const credentials = (await context.getCredentials('gcpServiceAccountApi')) as Record<string, unknown>;
 	const clientEmail = readCredentialValue(credentials, ['clientEmail', 'client_email', 'email']);
 	const privateKey = readCredentialValue(credentials, ['privateKey', 'private_key']);
 

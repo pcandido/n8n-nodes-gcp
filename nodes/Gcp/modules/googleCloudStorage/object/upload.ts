@@ -5,9 +5,9 @@ import type {
 	INodePropertyOptions,
 } from 'n8n-workflow';
 import { NodeOperationError } from 'n8n-workflow';
-import { getGoogleServiceAccountAccessToken } from '../../shared/googleServiceAccount';
+import { getGoogleServiceAccountAccessToken } from '../../../../shared/get-access-token';
 
-export const uploadOperation: INodePropertyOptions = {
+export const googleCloudStorageObjectUploadOption: INodePropertyOptions = {
 	name: 'Upload',
 	value: 'upload',
 	description: 'Upload a binary file as a GCS object',
@@ -16,14 +16,15 @@ export const uploadOperation: INodePropertyOptions = {
 
 const uploadBucketProperty: INodeProperties = {
 	displayName: 'Bucket',
-	name: 'object_upload_bucket',
+	name: 'googleCloudStorage_object_upload_bucket',
 	type: 'string',
 	default: '',
 	required: true,
 	displayOptions: {
 		show: {
-			entity: ['object'],
-			operation: ['upload'],
+			gcpModule: ['googleCloudStorage'],
+			googleCloudStorageEntity: ['object'],
+			googleCloudStorageObjectOperation: ['upload'],
 		},
 	},
 	description: 'Name of the GCS bucket',
@@ -31,14 +32,15 @@ const uploadBucketProperty: INodeProperties = {
 
 const uploadFilePathProperty: INodeProperties = {
 	displayName: 'File Path',
-	name: 'object_upload_file_path',
+	name: 'googleCloudStorage_object_upload_filePath',
 	type: 'string',
 	default: '',
 	required: true,
 	displayOptions: {
 		show: {
-			entity: ['object'],
-			operation: ['upload'],
+			gcpModule: ['googleCloudStorage'],
+			googleCloudStorageEntity: ['object'],
+			googleCloudStorageObjectOperation: ['upload'],
 		},
 	},
 	description: 'Path of the object inside the bucket',
@@ -46,26 +48,27 @@ const uploadFilePathProperty: INodeProperties = {
 
 const uploadBinaryProperty: INodeProperties = {
 	displayName: 'Binary Property',
-	name: 'object_upload_binary_property',
+	name: 'googleCloudStorage_object_upload_binaryProperty',
 	type: 'string',
 	default: 'data',
 	required: true,
 	displayOptions: {
 		show: {
-			entity: ['object'],
-			operation: ['upload'],
+			gcpModule: ['googleCloudStorage'],
+			googleCloudStorageEntity: ['object'],
+			googleCloudStorageObjectOperation: ['upload'],
 		},
 	},
 	description: 'Binary property that contains the file content',
 };
 
-export const uploadProperties: INodeProperties[] = [
+export const googleCloudStorageObjectUploadProperties: INodeProperties[] = [
 	uploadBucketProperty,
 	uploadFilePathProperty,
 	uploadBinaryProperty,
 ];
 
-export async function executeUpload(
+export async function executeGoogleCloudStorageObjectUpload(
 	context: IExecuteFunctions,
 	items: INodeExecutionData[],
 	itemIndex: number,
@@ -108,9 +111,11 @@ export async function executeUpload(
 			json: true,
 		})) as Record<string, unknown>;
 	} catch (error) {
-		throw new NodeOperationError(context.getNode(), `GCS upload request failed: ${String(error)}`, {
-			itemIndex,
-		});
+		throw new NodeOperationError(
+			context.getNode(),
+			`GCS upload request failed: ${String(error)}`,
+			{ itemIndex },
+		);
 	}
 
 	const encodedPath = filePath
@@ -118,19 +123,14 @@ export async function executeUpload(
 		.filter((part) => part.length > 0)
 		.map((part) => encodeURIComponent(part))
 		.join('/');
-	const objectUrl = `https://storage.googleapis.com/${encodeURIComponent(bucket)}/${encodedPath}`;
-	const gsUrl = `gs://${bucket}/${filePath}`;
-	const mediaLink =
-		typeof uploadedObject.mediaLink === 'string' ? uploadedObject.mediaLink : undefined;
-	const selfLink = typeof uploadedObject.selfLink === 'string' ? uploadedObject.selfLink : undefined;
 
 	return {
 		bucket,
 		filePath,
-		objectUrl,
-		gsUrl,
-		mediaLink,
-		selfLink,
+		objectUrl: `https://storage.googleapis.com/${encodeURIComponent(bucket)}/${encodedPath}`,
+		gsUrl: `gs://${bucket}/${filePath}`,
+		mediaLink: typeof uploadedObject.mediaLink === 'string' ? uploadedObject.mediaLink : undefined,
+		selfLink: typeof uploadedObject.selfLink === 'string' ? uploadedObject.selfLink : undefined,
 		binaryProperty,
 		fileName: binaryData.fileName,
 		mimeType,
