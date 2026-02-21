@@ -57,7 +57,7 @@ export async function executeGoogleCloudStorageObjectDownload(
 		url: `https://storage.googleapis.com/storage/v1/b/${encodeURIComponent(bucket)}/o/${encodeObjectName(filePath)}`,
 		headers: { Authorization: `Bearer ${accessToken}` },
 		json: true,
-	})) as { name?: string; mimeType?: string; size?: string; generation?: string };
+	})) as { name?: string; contentType?: string; size?: string; generation?: string };
 
 	let rawBody: unknown;
 	try {
@@ -85,7 +85,7 @@ export async function executeGoogleCloudStorageObjectDownload(
 		binaryData = await context.helpers.prepareBinaryData(
 			fileBuffer,
 			metadata.name || filePath,
-			metadata.mimeType || 'application/octet-stream',
+			metadata.contentType || 'application/octet-stream',
 		);
 	} catch (error) {
 		throw new NodeOperationError(context.getNode(), `Failed to prepare binary data: ${String(error)}`, {
@@ -99,7 +99,7 @@ export async function executeGoogleCloudStorageObjectDownload(
 			filePath,
 			binaryProperty: outputBinaryProperty,
 			size: metadata.size,
-			mimeType: metadata.mimeType,
+			mimeType: metadata.contentType,
 			generation: metadata.generation,
 		},
 		binary: {
