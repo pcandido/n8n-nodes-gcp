@@ -14,9 +14,9 @@ export class GcpServiceAccountApi implements ICredentialType {
 
 	test: ICredentialTestRequest = {
 		request: {
-			baseURL: 'https://oauth2.googleapis.com',
-			url: '/token',
-			method: 'POST',
+			baseURL: 'https://www.googleapis.com',
+			url: '/discovery/v1/apis',
+			method: 'GET',
 		},
 	};
 

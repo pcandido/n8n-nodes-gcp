@@ -76,23 +76,47 @@ export async function getGoogleServiceAccountAccessToken(
 		},
 		body: formBody,
 		json: false,
-	})) as string;
+	})) as unknown;
 
-	let parsedToken: { access_token?: string };
-	try {
-		parsedToken = JSON.parse(tokenResponse) as { access_token?: string };
-	} catch {
+	let parsedToken: { access_token?: string; error?: string; error_description?: string };
+	if (typeof tokenResponse === 'string') {
+		try {
+			parsedToken = JSON.parse(tokenResponse) as {
+				access_token?: string;
+				error?: string;
+				error_description?: string;
+			};
+		} catch {
+			throw new NodeOperationError(
+				context.getNode(),
+				`Could not parse Google token response: ${tokenResponse}`,
+				{ itemIndex },
+			);
+		}
+	} else if (typeof tokenResponse === 'object' && tokenResponse !== null) {
+		parsedToken = tokenResponse as {
+			access_token?: string;
+			error?: string;
+			error_description?: string;
+		};
+	} else {
 		throw new NodeOperationError(
 			context.getNode(),
-			`Could not parse Google token response: ${tokenResponse}`,
+			`Unexpected Google token response type: ${typeof tokenResponse}`,
 			{ itemIndex },
 		);
 	}
 
 	if (!parsedToken.access_token) {
-		throw new NodeOperationError(context.getNode(), `Google token response missing access token: ${tokenResponse}`, {
-			itemIndex,
-		});
+		const errorMessage = [parsedToken.error, parsedToken.error_description]
+			.filter((value): value is string => typeof value === 'string' && value.length > 0)
+			.join(': ');
+
+		throw new NodeOperationError(
+			context.getNode(),
+			`Google token response missing access token${errorMessage ? ` (${errorMessage})` : ''}`,
+			{ itemIndex },
+		);
 	}
 
 	return parsedToken.access_token;
