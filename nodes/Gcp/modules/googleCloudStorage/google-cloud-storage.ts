@@ -1,11 +1,6 @@
-import type {
-	IDataObject,
-	IExecuteFunctions,
-	INodeExecutionData,
-	INodeProperties,
-	INodePropertyOptions,
-} from 'n8n-workflow';
+import type { IExecuteFunctions, INodeExecutionData, INodeProperties, INodePropertyOptions } from 'n8n-workflow';
 import { NodeOperationError } from 'n8n-workflow';
+import type { IOperationResult } from '../../../shared/operation-result';
 import {
 	executeGoogleCloudStorageObject,
 	googleCloudStorageObjectEntityOption,
@@ -40,11 +35,12 @@ export async function executeGoogleCloudStorage(
 	context: IExecuteFunctions,
 	items: INodeExecutionData[],
 	itemIndex: number,
-): Promise<IDataObject> {
+): Promise<IOperationResult> {
 	const entity = context.getNodeParameter(googleCloudStorageEntityProperty.name, itemIndex) as string;
 
 	switch (entity) {
-		case 'object': return await executeGoogleCloudStorageObject(context, items, itemIndex);
+		case 'object':
+			return await executeGoogleCloudStorageObject(context, items, itemIndex);
 		default:
 			throw new NodeOperationError(
 				context.getNode(),

@@ -1,5 +1,4 @@
 import type {
-	IDataObject,
 	IExecuteFunctions,
 	INodeExecutionData,
 	INodeProperties,
@@ -7,6 +6,7 @@ import type {
 	INodeTypeDescription,
 } from 'n8n-workflow';
 import { NodeConnectionTypes, NodeOperationError } from 'n8n-workflow';
+import type { IOperationResult } from '../shared/operation-result';
 import {
 	executeGoogleCloudStorage,
 	googleCloudStorageModuleOption,
@@ -53,11 +53,11 @@ export class Gcp implements INodeType {
 		for (let itemIndex = 0; itemIndex < iterations; itemIndex++) {
 			try {
 				const selectedModule = this.getNodeParameter(gcpModuleProperty.name, itemIndex) as string;
-				let payload: IDataObject;
+				let result: IOperationResult;
 
 				switch (selectedModule) {
 					case 'googleCloudStorage':
-						payload = await executeGoogleCloudStorage(this, items, itemIndex);
+						result = await executeGoogleCloudStorage(this, items, itemIndex);
 						break;
 					default:
 						throw new NodeOperationError(
@@ -68,8 +68,8 @@ export class Gcp implements INodeType {
 				}
 
 				outputItems.push({
-					json: payload,
-					binary: items[itemIndex]?.binary,
+					json: result.json,
+					binary: result.binary,
 					pairedItem: items.length > 0 ? { item: itemIndex } : undefined,
 				});
 			} catch (error) {

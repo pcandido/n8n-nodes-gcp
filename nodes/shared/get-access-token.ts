@@ -2,6 +2,11 @@ import type { IExecuteFunctions } from 'n8n-workflow';
 import { createSign } from 'crypto';
 import { NodeOperationError } from 'n8n-workflow';
 
+export interface IGcpServiceAccountCredentials {
+	clientEmail: string;
+	privateKey: string;
+}
+
 function readCredentialValue(credentials: Record<string, unknown>, keys: string[]): string | undefined {
 	for (const key of keys) {
 		const value = credentials[key];
@@ -49,11 +54,10 @@ function createServiceAccountJwt(clientEmail: string, privateKey: string, scope:
 	return `${unsignedToken}.${signature}`;
 }
 
-export async function getGoogleServiceAccountAccessToken(
+export async function getGcpServiceAccountCredentials(
 	context: IExecuteFunctions,
 	itemIndex: number,
-	scope: string,
-): Promise<string> {
+): Promise<IGcpServiceAccountCredentials> {
 	const credentials = (await context.getCredentials('gcpServiceAccountApi')) as Record<string, unknown>;
 	const clientEmail = readCredentialValue(credentials, ['clientEmail', 'client_email', 'email']);
 	const privateKey = readCredentialValue(credentials, ['privateKey', 'private_key']);
@@ -61,12 +65,24 @@ export async function getGoogleServiceAccountAccessToken(
 	if (!clientEmail || !privateKey) {
 		throw new NodeOperationError(
 			context.getNode(),
-			'Missing Client Email or Private Key in Google credentials.',
+			'Missing Client Email or Private Key in GCP Service Account credentials.',
 			{ itemIndex },
 		);
 	}
 
-	const assertion = createServiceAccountJwt(clientEmail, normalizePrivateKey(privateKey), scope);
+	return {
+		clientEmail,
+		privateKey: normalizePrivateKey(privateKey),
+	};
+}
+
+export async function getGoogleServiceAccountAccessToken(
+	context: IExecuteFunctions,
+	itemIndex: number,
+	scope: string,
+): Promise<string> {
+	const serviceAccount = await getGcpServiceAccountCredentials(context, itemIndex);
+	const assertion = createServiceAccountJwt(serviceAccount.clientEmail, serviceAccount.privateKey, scope);
 	const formBody = `grant_type=${encodeURIComponent('urn:ietf:params:oauth:grant-type:jwt-bearer')}&assertion=${encodeURIComponent(assertion)}`;
 	const tokenResponse = (await context.helpers.httpRequest({
 		method: 'POST',

@@ -6,6 +6,7 @@ import type {
 	INodePropertyOptions,
 } from 'n8n-workflow';
 import { NodeOperationError } from 'n8n-workflow';
+import type { IOperationResult } from '../../../../shared/operation-result';
 import { getGoogleServiceAccountAccessToken } from '../../../../shared/get-access-token';
 
 export const googleCloudStorageObjectUploadOption: INodePropertyOptions = {
@@ -73,7 +74,7 @@ export async function executeGoogleCloudStorageObjectUpload(
 	context: IExecuteFunctions,
 	items: INodeExecutionData[],
 	itemIndex: number,
-): Promise<IDataObject> {
+): Promise<IOperationResult> {
 	const bucket = context.getNodeParameter(uploadBucketProperty.name, itemIndex) as string;
 	const filePath = context.getNodeParameter(uploadFilePathProperty.name, itemIndex) as string;
 	const binaryProperty = context.getNodeParameter(uploadBinaryProperty.name, itemIndex) as string;
@@ -119,5 +120,5 @@ export async function executeGoogleCloudStorageObjectUpload(
 		);
 	}
 
-	return uploadedObject
+	return { json: uploadedObject, binary: items[itemIndex]?.binary };
 }
