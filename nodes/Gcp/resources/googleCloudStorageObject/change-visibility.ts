@@ -1,7 +1,10 @@
 import type { IExecuteFunctions, INodeProperties, INodePropertyOptions } from 'n8n-workflow';
 import { NodeOperationError } from 'n8n-workflow';
 import type { IOperationResult } from '../../../shared/operation-result';
-import { encodeObjectName, getGcsAccessToken, readErrorStatusCode } from './common';
+import { getGoogleServiceAccountAccessToken } from '../../../shared/get-access-token';
+import { encodeObjectName, readErrorStatusCode } from './common';
+
+const GCS_FULL_CONTROL_SCOPE = 'https://www.googleapis.com/auth/devstorage.full_control';
 
 export const googleCloudStorageObjectChangeVisibilityOption: INodePropertyOptions = {
 	name: 'Change Visibility',
@@ -53,7 +56,7 @@ export async function executeGoogleCloudStorageObjectChangeVisibility(
 	const bucket = context.getNodeParameter(visibilityBucketProperty.name, itemIndex) as string;
 	const filePath = context.getNodeParameter(visibilityFilePathProperty.name, itemIndex) as string;
 	const visibility = context.getNodeParameter(visibilityValueProperty.name, itemIndex) as 'public' | 'private';
-	const accessToken = await getGcsAccessToken(context, itemIndex);
+	const accessToken = await getGoogleServiceAccountAccessToken(context, itemIndex, GCS_FULL_CONTROL_SCOPE);
 	const objectName = encodeObjectName(filePath);
 
 	try {
@@ -85,9 +88,22 @@ export async function executeGoogleCloudStorageObjectChangeVisibility(
 				});
 		}
 	} catch (error) {
-		throw new NodeOperationError(context.getNode(), `Failed to change visibility: ${String(error)}`, {
-			itemIndex,
-		});
+		const statusCode = readErrorStatusCode(error);
+		const responseData = (error as { response?: { data?: unknown } })?.response?.data;
+		const responseMessage =
+			typeof responseData === 'string'
+				? responseData
+				: responseData && typeof responseData === 'object'
+					? JSON.stringify(responseData)
+					: undefined;
+		const baseMessage = statusCode
+			? `Failed to change visibility (HTTP ${statusCode})`
+			: 'Failed to change visibility';
+		throw new NodeOperationError(
+			context.getNode(),
+			responseMessage ? `${baseMessage}: ${responseMessage}` : `${baseMessage}: ${String(error)}`,
+			{ itemIndex },
+		);
 	}
 
 	return { json: { bucket, filePath, visibility } };
