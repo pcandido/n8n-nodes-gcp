@@ -1,4 +1,5 @@
 import type {
+	IDataObject,
 	IExecuteFunctions,
 	INodeExecutionData,
 	INodeProperties,
@@ -52,7 +53,7 @@ export class Gcp implements INodeType {
 		for (let itemIndex = 0; itemIndex < iterations; itemIndex++) {
 			try {
 				const selectedModule = this.getNodeParameter(gcpModuleProperty.name, itemIndex) as string;
-				let payload: Record<string, unknown>;
+				let payload: IDataObject;
 
 				switch (selectedModule) {
 					case 'googleCloudStorage':
@@ -67,10 +68,7 @@ export class Gcp implements INodeType {
 				}
 
 				outputItems.push({
-					json: {
-						module: selectedModule,
-						payload,
-					},
+					json: payload,
 					binary: items[itemIndex]?.binary,
 					pairedItem: items.length > 0 ? { item: itemIndex } : undefined,
 				});

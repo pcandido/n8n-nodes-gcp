@@ -1,4 +1,5 @@
 import type {
+	IDataObject,
 	IExecuteFunctions,
 	INodeExecutionData,
 	INodeProperties,
@@ -72,7 +73,7 @@ export async function executeGoogleCloudStorageObjectUpload(
 	context: IExecuteFunctions,
 	items: INodeExecutionData[],
 	itemIndex: number,
-): Promise<Record<string, unknown>> {
+): Promise<IDataObject> {
 	const bucket = context.getNodeParameter(uploadBucketProperty.name, itemIndex) as string;
 	const filePath = context.getNodeParameter(uploadFilePathProperty.name, itemIndex) as string;
 	const binaryProperty = context.getNodeParameter(uploadBinaryProperty.name, itemIndex) as string;
@@ -94,7 +95,7 @@ export async function executeGoogleCloudStorageObjectUpload(
 		'https://www.googleapis.com/auth/devstorage.read_write',
 	);
 
-	let uploadedObject: Record<string, unknown>;
+	let uploadedObject: IDataObject;
 	try {
 		uploadedObject = (await context.helpers.httpRequest({
 			method: 'POST',
@@ -109,7 +110,7 @@ export async function executeGoogleCloudStorageObjectUpload(
 			},
 			body: fileBuffer,
 			json: true,
-		})) as Record<string, unknown>;
+		})) as IDataObject;
 	} catch (error) {
 		throw new NodeOperationError(
 			context.getNode(),
@@ -118,23 +119,5 @@ export async function executeGoogleCloudStorageObjectUpload(
 		);
 	}
 
-	const encodedPath = filePath
-		.split('/')
-		.filter((part) => part.length > 0)
-		.map((part) => encodeURIComponent(part))
-		.join('/');
-
-	return {
-		bucket,
-		filePath,
-		objectUrl: `https://storage.googleapis.com/${encodeURIComponent(bucket)}/${encodedPath}`,
-		gsUrl: `gs://${bucket}/${filePath}`,
-		mediaLink: typeof uploadedObject.mediaLink === 'string' ? uploadedObject.mediaLink : undefined,
-		selfLink: typeof uploadedObject.selfLink === 'string' ? uploadedObject.selfLink : undefined,
-		binaryProperty,
-		fileName: binaryData.fileName,
-		mimeType,
-		fileSize: binaryData.fileSize,
-		uploadedObject,
-	};
+	return uploadedObject
 }
