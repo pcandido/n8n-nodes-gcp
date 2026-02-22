@@ -1,46 +1,44 @@
-# n8n-nodes-gcp-storage
+# n8n-nodes-gcp
 
-This is an n8n community node. It lets you use _app/service name_ in your n8n workflows.
-
-_App/service name_ is _one or two sentences describing the service this node integrates with_.
+`n8n-nodes-gcp` is an n8n community node with modular Google Cloud Platform resources.
 
 [n8n](https://n8n.io/) is a [fair-code licensed](https://docs.n8n.io/sustainable-use-license/) workflow automation platform.
 
-[Installation](#installation)
-[Operations](#operations)
-[Credentials](#credentials)
-[Compatibility](#compatibility)
-[Usage](#usage)
-[Resources](#resources)
-[Version history](#version-history)
-
 ## Installation
 
-Follow the [installation guide](https://docs.n8n.io/integrations/community-nodes/installation/) in the n8n community nodes documentation.
-
-## Operations
-
-_List the operations supported by your node._
+Follow the [official installation guide](https://docs.n8n.io/integrations/community-nodes/installation/) for n8n community nodes.
 
 ## Credentials
 
-_If users need to authenticate with the app/service, provide details here. You should include prerequisites (such as signing up with the service), available authentication methods, and how to set them up._
+This node uses the credential type `GCP Service Account API` with:
+
+- `Client Email`
+- `Private Key` (PEM)
+
+Recommended setup:
+
+1. Create a Google Cloud Service Account.
+2. Grant permissions for the resources/operations you want to use.
+3. Add the service account credentials in n8n.
+
+## Modules and Resource Documentation
+
+Use this section as the canonical index of supported resources.
+When a new module or resource is added, include it in this table and add a dedicated `README.md` in the resource folder.
+
+| Module | Resource | Status | Documentation |
+| --- | --- | --- | --- |
+| Google Cloud Storage | Bucket | Available | [`nodes/Gcp/resources/googleCloudStorageBucket/README.md`](nodes/Gcp/resources/googleCloudStorageBucket/README.md) |
+| Google Cloud Storage | Object | Available | [`nodes/Gcp/resources/googleCloudStorageObject/README.md`](nodes/Gcp/resources/googleCloudStorageObject/README.md) |
+
 
 ## Compatibility
 
-_State the minimum n8n version, as well as which versions you test against. You can also include any known version incompatibility issues._
-
-## Usage
-
-_This is an optional section. Use it to help users with any difficult or confusing aspects of the node._
-
-_By the time users are looking for community nodes, they probably already know n8n basics. But if you expect new users, you can link to the [Try it out](https://docs.n8n.io/try-it-out/) documentation to help them get started._
+- Node package version: `0.2.0`
+- n8n Nodes API version: `1`
 
 ## Resources
 
-* [n8n community nodes documentation](https://docs.n8n.io/integrations/#community-nodes)
-* _Link to app/service documentation._
-
-## Version history
-
-_This is another optional section. If your node has multiple versions, include a short description of available versions and what changed, as well as any compatibility impact._
+- [n8n community nodes documentation](https://docs.n8n.io/integrations/#community-nodes)
+- [Google Cloud Storage documentation](https://cloud.google.com/storage/docs)
+- [Service account overview](https://cloud.google.com/iam/docs/service-account-overview)

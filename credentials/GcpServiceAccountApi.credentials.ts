@@ -10,7 +10,7 @@ export class GcpServiceAccountApi implements ICredentialType {
 		dark: 'file:GcpServiceAccountApi.dark.svg',
 	};
 
-	documentationUrl = 'https://cloud.google.com/storage/docs/authentication';
+	documentationUrl = 'https://docs.cloud.google.com/iam/docs/service-account-overview';
 
 	test: ICredentialTestRequest = {
 		request: {

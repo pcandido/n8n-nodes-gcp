@@ -12,7 +12,7 @@ services:
       - NODE_ENV=development
     volumes:
       - n8n_data:/home/node/.n8n
-      - ./:/home/node/.n8n/custom/node_modules/n8n-nodes-gcp-storage
+      - ./:/home/node/.n8n/custom/node_modules/n8n-nodes-gcp
     restart: unless-stopped
 
 volumes:
